@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> vue-router 详解 </title>
+</head>
+
+<body>
+    <div>
+        <h1> vue-router 是什么？</h1>
+        <div>
+            <p> 路由是单页面应用(SPA)的路径管理器。简单说，vue-router就是WebApp链接路径管理系统。</p>
+            <p> vue的单页面应用是基于路由和组件的，路由用于设定访问路径，并将路径和足见映射起来。</p>
+            <p> 在vue-router单页面应用中，是路径之间的切换，也就是组件的切换。</p>
+            <p> 路由模块的本质就是建立url和页面之间的映射关系。 </p>
+        </div>
+        <h1> vue-router 实现原理 </h1>
+        <div>
+            <p> SPA: 单页面应用，只有一个完整的页面，在加载页面时，不会加载整个页面，只更新某个制定容器里面的内容。 </p>
+            <p> SPA 点核心之一是，改变视图的同时不会向后端发出请求。</p>
+        </div>
+        <h1> vue-router 两种方式 根据mode参数来决定采用那种方式 </h1>
+        <div>
+            <h3> 1. Hash 模式 原理：onhashchange 事件 </h3>
+
+            <p> vue-router 的默认hash 模式，使用URL的hash来模拟一个完整的URL，相当于URL发生改变，页面不会重新加载。 </p>
+            <p> 因为hash发生变化的url都会被浏览器记录下来。</p>
+            <p> hash（#）是URL是锚点，代表是网页中的一个位置，单单改变#后面的部门，浏览器只会滚动到响应的位置，不会重新加载</p>
+            <p> 网页，这是#是用来指导浏览器的动作，对服务端完全无用，http请求也不包括#，</p>
+            <p> hash模式是通过锚点值的改变，根据不同的值，渲染制定DOM位置不同数据。</p>
+        </div>
+        <div>
+            <h3>2. History 模式 原理：pushState() 和 replaceState() 方法 API来完成URL跳转无须加载页面。</h3>
+            <p> history.go(-2);//后退两次 </p>
+            <p> history.go(2);//前进两次 </p>
+            <p> history.back(); //后退 </p>
+            <p> hsitory.forward(); //前进 </p>
+            <h3>history.pushState(state, title, url) : 无刷新的向浏览器 历史最前方 加入一条记录。(最少接受两个参数)</h3>
+            <p> History 包括了pushState,replaceState两个方法,这两个方法接收三个参数:stateObj,title,url。</p>
+            <ul>
+                <li>
+                    <p> state(any) 需要保存的数据，这个数据在触发popstate事件时保存在event.state上。 </p>
+                    state:一个与指定网址相关的状态对象，popstate事件触发时，该对象会传入回调函数。如果不需要这个对象，此处可以填null。
+                </li>
+                <li> title(string)：新页面的标题，但是所有浏览器目前都忽略这个值，因此这里可以填null。 </li>
+                <li> url(string) 需要更改的url地址。新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址。 </li>
+            </ul>
+            <p> pushState方法不会触发页面刷新，只是导致history对象发生变化，地址栏会有反应。 </p>
+            <p> pushstate把页面的状态保存在state对象中,当页面的url再变回这个url时，可以通过event.state取到这个state对象，</p>
+            <p> 从而可以对页面状态进行还原，这里的页面状态就是页面字体颜色，其实滚动条的位置，阅读进度，组件的开关的这些页面状态都可以存储到state的里面。 </p>
+            <p> History.pushState 相比于 hash 的优势：</p>
+            <ul>
+                <li> pushState() 设置的新 URL 可以是与当前 URL 同源的任意 URL；而 hash 只可修改 # 后面的部分，因此只能设置与当前 URL 同文档的 URL；</li>
+                <li> pushState() 设置的新 URL 可以与当前 URL 一模一样，这样也会把记录添加到栈中；而hash 设置的新值必须与原来不一样才会触发动作将记录添加到栈中；</li>
+                <li> pushState() 通过 stateObject 参数可以添加任意类型的数据到记录中；而 hash 只可添加短字符串； </li>
+                <li> pushState() 可额外设置 title 属性供后续使用。</li>
+            </ul>
+            <p> history 模式下前端的URl和实际向后端发起请求的 URL 一致，否则就会返回404，用 history 模式即可，只需在后端（Apache 或 Nginx）进行简单的路由配置，同时搭配前端路由的
+                404 页面支持。
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    // hash 模式的原理
+    //  事件在当前 URL 的锚部分(以 '#' 号为开始) 发生改变时触发 。
+    window.onhashchange = function (event) {
+        console.log(event.oldURL, event.newURL);
+        let hash = location.hash.slice(1);
+        document.body.style.color = hash;
+    }
+
+    // history 模式原理
+    // history.pushState({
+    //     color: 'red'
+    // }, 'red', 'red');
+
+    // window.onpopstate = function (event) {
+    //     console.log(event.state)
+    //     if (event.state && event.state.color === 'red') {
+    //         document.body.style.color = 'red';
+    //     }
+    // }
+    // 验证浏览器是否支持 History API
+    if (!!(window.history && history.pushState)) {
+        // 支持History API
+    } else {
+        // 不支持
+    }
+</script>
