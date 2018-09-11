@@ -25,15 +25,16 @@
         <h1> vue-router 两种方式 根据mode参数来决定采用那种方式 </h1>
         <div>
             <h3> 1. Hash 模式 原理：onhashchange 事件 </h3>
-
             <p> vue-router 的默认hash 模式，使用URL的hash来模拟一个完整的URL，相当于URL发生改变，页面不会重新加载。 </p>
             <p> 因为hash发生变化的url都会被浏览器记录下来。</p>
             <p> hash（#）是URL是锚点，代表是网页中的一个位置，单单改变#后面的部门，浏览器只会滚动到响应的位置，不会重新加载</p>
             <p> 网页，这是#是用来指导浏览器的动作，对服务端完全无用，http请求也不包括#，</p>
             <p> hash模式是通过锚点值的改变，根据不同的值，渲染制定DOM位置不同数据。</p>
         </div>
+        
         <div>
             <h3>2. History 模式 原理：pushState() 和 replaceState() 方法 API来完成URL跳转无须加载页面。</h3>
+            <h2> 执行history.back()或history.forward()后触发 window.onpopstate事件 </h2>
             <p> history.go(-2);//后退两次 </p>
             <p> history.go(2);//前进两次 </p>
             <p> history.back(); //后退 </p>
