@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> router - API </title>
+</head>
+
+<body>
+    <div>
+        <h1> routre - API </h1>
+        <div>
+            <p>
+                router-link 组件支持用户在具有路由功能的应用中 (点击) 导航。 通过 to 属性指定目标地址，
+                默认渲染成带有正确链接的 a 标签，可以通过配置 tag属性生成别的标签。
+                另外，当目标路由成功激活时，链接元素自动设置一个表示激活的 CSS 类名。
+                router-link 比起写死的 <a href="..."> 会好一些，理由如下：
+            </p>
+            <ul>
+                <li> 无论是HTML5 history 模式还是 hash 模式，它的表现行为一致，所以，当你要切换路由模式，
+                    或者在IE9 降级使用hash 模式，无需任何改动。
+                </li>
+                <li> 在 HTML5 history 模式下，router-link 会守卫点击时间，让浏览器不再重新加载页面。</li>
+                <li> 在 HTML5 history 模式下使用 base 选项之后，所有的 to 属性都不需要写（基路径）了。</li>
+            </ul>
+            <!--  <a> 将作为真实的链接 (它会获得正确的 href 的)，而 "激活时的CSS类名" 则设置到外层的 <li>。 -->
+            <router-link tag="li" to="/foo">
+                <a>/foo</a>
+            </router-link>
+        </div>
+
+        <div>
+            <h2> router-link Props </h2>
+            <p>
+                to:类型 string| Location
+                当被点击后，内部会立刻把 to 的值传到 router.push()，所以这个值可以是一个字符串或者是描述目标位置的对象。
+                <!-- <router-link to="home">Home</router-link>  -->
+            </p>
+            <p>
+                replace: 类型 boolean 默认 false
+                如果设置 replace 属性，点击点用 router.replace() 而不是 router.push() 在导航不会留下 history 记录。
+                <!--  <router-link :to="{ path: '/abc'}" replace> </router-link> -->
+            </p>
+            <p>
+                append : 类型 boolean 默认 false
+                设置 append 属性后，则在当前 (相对) 路径前添加基路径。例如，我们从 /a 导航到一个相对路径 b，
+                如果没有配置 append，则路径为 /b，如果配了，则为 /a/b
+                <!--  <router-link :to="{ path: 'relative/path'}" append> </router-link>  -->
+            </p>
+            <p>
+                tag: string 默认 “a” 标签
+                有时候想要 router-link 渲染成某种标签，例如 li 。 于是我们使用 tag prop 类指定何种标签，同样它还是会监听点击，触发导航。
+                <!-- <router-link to="/foo" tag="li"> foo</router-link>  -->
+                <!-- 渲染结果  <li>foo</li> -->
+            </p>
+            <p>
+                active-calss: 类型string 默认值：router-link-active
+                设置 链接激活时使用的 CSS 类名。默认值可以通过路由的构造选项 linkActiveClass 来全局配置。
+            </p>
+            <p>
+                exact: 类型 boolean 默认 false
+                exact的值为bool型，为true是表示严格匹配，为false时为正常匹配。
+                如在exact为true时，’/link’与’/’是不匹配的，但是在false的情况下它们又是匹配的。
+            </p>
+            <p>
+                event: 类型 string | Array 默认值： “click”
+                声明可以用来触发导航的事件。可以是一个字符串或是一个包含字符串的数组。
+            </p>
+            <p>
+                exact-active-class: 类型 默认值： "router-link-exact-active"
+                配置当链接被精确匹配的时候应该激活的 class。
+            </p>
+        </div>
+
+        <div>
+            <h2> router-view 渲染路径匹配视图组件 </h2>
+            <p> 所以可以配合 transition 和 keep-alive 使用。如果两个结合一起用，要确保在内层使用 keep-alive </p>
+            <div>
+                <h3> router-view Props </h3>
+                <p>
+                    name: 类型 string
+                    如果 router-view 设置名称，则会渲染对应的路由配置中 components 下相应组件。
+                </p>
+                <p>
+                    mode:类型 string 默认： hash（浏览器）| abstract （node 环境）
+                    <p> hash：使用URL hash 值来作为路由。支持所有浏览器。 </p>
+                    <p> history：依赖HTML 5 History API 和服务器配置。 </p>
+                    <p> abstract: 支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式。</p>
+
+                </p>
+                <p>
+                    base:类型 string 默认值“/”
+                    应用的基路径。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。
+                </p>
+                <p>
+                    linkActiveClass :类型 string 默认值：router-link-active
+                    全局配置 router-link 的默认“激活 class 类名”。
+                </p>
+                <p>
+                    linkExactActiveClass:类型 string 默认值：router-link-exact-active
+                    全局配置 router-link 精确激活的默认的 class。
+                </p>
+                <p>
+                    scrollBehavior:类型 function
+                </p>
+                <p>
+                    parseQuery / stringifyQuery :类型 function
+                    提供自定义查询字符串的解析/反解析函数。覆盖默认行为
+                </p>
+                <p>
+                    fallback:类型 boolean
+                    当浏览器不支持 history.pushState 控制路由是否应该回退到 hash 模式。默认值为 true。
+                </p>
+            </div>
+        </div>
+        <div>
+            <h2> router 实例属性 </h2>
+            <p> router.app 配置 router 的Vue 实例。</p>
+            <p> router.mode 路由使用的模式。</p>
+            <p> router.currentRouter 当前路由对应的路由信息对象。</p>
+        </div>
+        <div>
+            <h2> routre 实例方法 </h2>
+            <p> js 部分有写 </p>
+        </div>
+        <div>
+            <h2> 路由对象属性 </h2>
+            <p>
+                $router.path:类型 string
+                对应当前路由的路径，总解析为绝对路径，如： /foo/bar
+            </p>
+            <p> $router.panams: 类型 Obj
+                一个key/value 对象，包含动态片段和全匹配片段，如果没有路由参数，就是空对象。
+            </p>
+            <p>
+                $router.query: 类型 Obj
+                一个 key/value 对象，表示 URL 查询参数。例如，对于路径 /foo?user=1，则有 $route.query.user == 1
+            </p>
+            <p>
+                $router.hash: 类型 string
+                当前路由的 hash 值 (带 #) ，如果没有 hash 值，则为空字符串。
+            </p>
+            <p>
+                $router.fullPath: 类型 string
+                完成解析后的URL，包含查询参数 hash 的完整路径。
+            </p>
+            <p>
+                $router.matched: 类型Array
+                一个数组，包含当前路由的所有嵌套路径片段的路由记录 。
+            </p>
+            <p>
+                $router.name: 当前路由的 名称（如果有的话）。
+            </p>
+            <p>
+                $router.redirectedFrom: 如果存在重定向，即为重定向来源的路由的名字
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    // ---- router 实例方法 --- // 
+    router.beforeEach();
+    router.beforeResolve();
+    router.afterEach();
+    router.push();
+    router.replace();
+    router.go();
+    router.back();
+    router.forward();
+    router.getMatchedComponents(); // 返回目标位置或是当前路由匹配的组件数组 (是数组的定义/构造类，不是实例)。通常在服务端渲染的数据预加载时时候。
+
+    router.resolve();
+    // const resolved: {
+    //     location: Location;
+    //     route: Route;
+    //     href: string;
+    // } = router.resolve(location, current?, append?)
+    // 解析目标位置(格式和 < router - link > 的 to prop 一样)。
+    // current 是当前默认的路由(通常你不需要改变它)
+    // append 允许你在 current 路由上附加路径(如同 router - link)
+
+    router.addRouters(); // 动态添加更多的路由规则。参数必须是一个符合 routes 选项要求的数组。
+
+    router.onReady();
+    /**
+     * router.onReady(callback, [errorCallback])
+     * 该方法把一个回调排队，在路由完成初始导航时调用，
+     * 这意味着它可以解析所有的异步进入钩子和路由初始化相关联的异步组件
+     * */
+
+    router.onError();
+    /**
+     * 注册一个回调，该回调会在路由导航过程中出错时被调用。注意被调用的错误必须是下列情形中的一种：
+     * 错误在一个路由守卫函数中被同步抛出；
+     * 错误在一个路由守卫函数中通过调用 next(err) 的方式异步捕获并处理；
+     * 渲染一个路由的过程中，需要尝试解析一个异步组件时发生错误。
+     */
+</script>
